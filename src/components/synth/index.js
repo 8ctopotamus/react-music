@@ -15,9 +15,17 @@ export default () => {
     const synth = state.mode === 'light' ? new PluckSynth() : new MetalSynth();
     synth.toDestination();
 
+    const playSound = targetLetter => {
+        const foundNote = state.notes.find(({letter}) => letter === targetLetter);
+        console.log(note);
+        if (note) {
+            synth.triggerAttackRelease(foundNote.note, '8n');
+        }
+    };
+
     return (
         <div style={styles}>
-           {state.notes.map(note => <Pad {...note} key={note.letter}/>)}
+           {state.notes.map(note => <Pad {...note} playSound={playSound} key={note.letter} /> )}
         </div>
     )
 }
