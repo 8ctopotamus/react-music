@@ -50,27 +50,27 @@ const darkState = {
     notes: [
         {
             letter: 'a',
-            note: 'E4',
+            note: 'E3',
             color: '#251e3e',
         },
         {
             letter: 's',
-            note: 'F#4',
+            note: 'F#3',
             color: '#451e3e',
         },
         {
             letter: 'd',
-            note: 'G4',
+            note: 'G3',
             color: '#651e3e',
         },
         {
             letter: 'f',
-            note: 'A4',
+            note: 'A3',
             color: '#851e3e',
         },
         {
             letter: 'g',
-            note: 'B4',
+            note: 'B3',
             color: '#007a80',
         },
         {
@@ -80,12 +80,12 @@ const darkState = {
         },
         {
             letter: 'j',
-            note:  'D4',
+            note:  'D#4',
             color: '#3EAB3B',
         },
         {
             letter: 'k',
-            note:  'E5',
+            note:  'E4',
             color: '#03cea4',
         }
     ]

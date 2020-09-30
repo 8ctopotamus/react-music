@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { MetalSynth, PluckSynth } from 'tone';
+import { PolySynth, MonoSynth, Distortion, Chorus, BitCrusher } from 'tone';
 import { useAppContext } from "../../context";
 import Pad from './pad';
 
@@ -16,8 +16,22 @@ export default () => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [state.mode]);
 
-    const synth = state.mode === 'light' ? new PluckSynth() : new MetalSynth();
-    synth.toDestination();
+    let synth;
+    const distortedTone = new Distortion(0.8).toDestination();
+    const chorusTone = new Chorus(3, 2, .5).toDestination();
+    const bitCrusherTone = new BitCrusher(4).toDestination();
+
+    if (state.mode === 'light') {
+        synth = new PolySynth();
+        synth.connect(distortedTone);
+    } else {
+        synth = new MonoSynth();
+        synth.connect(bitCrusherTone);
+    }
+
+
+
+    // synth.toDestination();
 
     const handleKeyDown = e => {
         console.log(e.key);
@@ -28,7 +42,7 @@ export default () => {
         const foundNote = state.notes.find(({letter}) => letter === targetLetter);
         console.log(foundNote);
         if (foundNote) {
-            synth.triggerAttackRelease(foundNote.note, '8n');
+            synth.triggerAttackRelease(foundNote.note, '4n');
         }
     };
 
