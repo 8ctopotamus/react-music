@@ -10,12 +10,12 @@ export default ()=> {
 
     return (
         <select
-            onChange={e => dispatch({ type: 'TOGGLE_MODE', payload: e.target.value })}
-            value={state.mode}
+            onChange={e => dispatch({ type: 'TOGGLE_THEME', payload: e.target.value })}
+            value={state.theme}
             style={styles}
         >
-            <option value='light'>light</option>
             <option value='dark'>dark</option>
+            <option value='light'>light</option>
         </select>
     )
 }
