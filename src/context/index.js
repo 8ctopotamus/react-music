@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useReducer } from "react";
 import scales from './scales';
+import instruments from './instruments';
 
 const initialState = {
     theme: 'dark',
     scale: scales['chromatic'],
+    instrument: 'AMSynth'
 };
+
 const AppContext = createContext(initialState);
 
 const { Provider } = AppContext;
@@ -21,6 +24,15 @@ const reducer = (state, action) => {
                 return {
                     ...state,
                     scale: scales[action.payload]
+                }
+            } else {
+                return state
+            }
+        case 'CHANGE_INSTRUMENT':
+            if (instruments.includes(action.payload)) {
+                return {
+                    ...state,
+                    instrument: [action.payload]
                 }
             } else {
                 return state
