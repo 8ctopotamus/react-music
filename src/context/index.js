@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer } from "react";
 import scales from './scales';
 import instruments from './instruments';
+// import synth from '../components/synth';
 
 const initialState = {
     theme: 'dark',

@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
-import { AMSynth, DuoSynth, FMSynth, MembraneSynth, MetalSynth, MonoSynth, NoiseSynth, PluckSynth, PolySynth } from 'tone'; // synth instruments
-
+import { AMSynth, DuoSynth, FMSynth, MembraneSynth, MetalSynth, MonoSynth, PluckSynth } from 'tone'; // synth instruments
 import { Distortion, Chorus, BitCrusher } from 'tone'; // effects
 import { useAppContext } from "../../context";
 import Pad from './pad';
@@ -24,17 +23,45 @@ export default () => {
     const chorusTone = new Chorus(3, 2, .5).toDestination();
     const bitCrusherTone = new BitCrusher(4).toDestination();
 
-    if (state.theme === 'light') {
-        synth = new PolySynth();
-        synth.connect(distortedTone);
-    } else {
-        synth = new MonoSynth();
-        synth.connect(bitCrusherTone);
+    // jd - commented out to permit changing inststument to match state
+    //
+    // if (state.theme === 'light') {
+    //     synth = new PolySynth();
+    //     synth.connect(distortedTone);
+    // } else {
+    //     synth = new MonoSynth();
+    //     synth.connect(bitCrusherTone);
+    // }
+
+    switch (state.instrument[0]) {
+        case "AMSynth":
+            synth = new AMSynth();
+            break;
+        case "DuoSynth":
+            synth = new DuoSynth();
+            break;
+        case "FMSynth":
+            synth = new FMSynth();
+            break;            
+        case "MembraneSynth":
+            synth = new MembraneSynth();
+            break;
+        case "MetalSynth":
+            synth = new MetalSynth();
+            break;
+        case "MonoSynth":
+            synth = new MonoSynth();
+            break;            
+        case "PluckSynth":
+            synth = new PluckSynth();
+            break;            
+        default:
+            synth = new AMSynth();
     }
+    
+    // jd - note, add effects here?
 
-
-
-    // synth.toDestination();
+    synth.toDestination();
 
     const handleKeyDown = e => {
         console.log(e.key);

@@ -8,7 +8,7 @@ export default () => {
 
     return (
         <select onChange={e => dispatch({ type: 'CHANGE_INSTRUMENT', payload: e.target.value })} value={state.instrument}>
-            {instruments.map( i => <option value={i}>{i}</option>)}
+            {instruments.map( i => <option key={i} value={i}>{i}</option>)}
         </select>
     );
 }

@@ -5,6 +5,5 @@ export default [
     "MembraneSynth",
     "MetalSynth",
     "MonoSynth",
-    "NoiseSynth",
     "PluckSynth"
 ]
