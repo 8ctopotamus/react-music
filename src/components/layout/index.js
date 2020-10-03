@@ -8,7 +8,7 @@ export default ({ children }) => {
         display: 'grid',
         placeItems: 'center',
         height: '100vh',
-        background: state.mode === 'light' ? 'rgba(39,62,6,0.49)' : '#061E3E'
+        background: state.theme === 'dark' ? '#061E3E' : 'rgba(39,62,6,0.49)'
     };
     return (
         <div style={styles}>
