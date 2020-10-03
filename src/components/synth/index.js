@@ -1,7 +1,10 @@
 import React, {useEffect} from "react";
-import { PolySynth, MonoSynth, Distortion, Chorus, BitCrusher } from 'tone';
+import { AMSynth, DuoSynth, FMSynth, MembraneSynth, MetalSynth, MonoSynth, NoiseSynth, PluckSynth, PolySynth } from 'tone'; // synth instruments
+
+import { Distortion, Chorus, BitCrusher } from 'tone'; // effects
 import { useAppContext } from "../../context";
 import Pad from './pad';
+import { Tone } from 'tone/build/esm/core/Tone';
 
 const styles = {
     display: 'grid',
