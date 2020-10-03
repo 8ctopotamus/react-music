@@ -14,14 +14,14 @@ export default () => {
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [state.mode]);
+    }, [state.theme]);
 
     let synth;
     const distortedTone = new Distortion(0.8).toDestination();
     const chorusTone = new Chorus(3, 2, .5).toDestination();
     const bitCrusherTone = new BitCrusher(4).toDestination();
 
-    if (state.mode === 'light') {
+    if (state.theme === 'light') {
         synth = new PolySynth();
         synth.connect(distortedTone);
     } else {
@@ -39,7 +39,7 @@ export default () => {
     };
 
     const playSound = targetLetter => {
-        const foundNote = state.notes.find(({letter}) => letter === targetLetter);
+        const foundNote = state.scale.find(({letter}) => letter === targetLetter);
         console.log(foundNote);
         if (foundNote) {
             synth.triggerAttackRelease(foundNote.note, '4n');
@@ -48,7 +48,7 @@ export default () => {
 
     return (
         <div style={styles}>
-           {state.notes.map(note => <Pad {...note} playSound={playSound} key={note.letter} /> )}
+           {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.letter} /> )}
         </div>
     )
 }
