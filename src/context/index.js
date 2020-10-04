@@ -1,12 +1,28 @@
 import React, { createContext, useContext, useReducer } from "react";
 import scales from './scales';
-import instruments from './instruments';
+// import instruments from './instruments';
 // import synth from '../components/synth';
+import { Tone } from 'tone/build/esm/core/Tone';
+import { AMSynth, DuoSynth, FMSynth, MembraneSynth, MetalSynth, MonoSynth, PluckSynth } from 'tone'; // synth instruments
+
+const synthInstruments = {
+    "AMSynth": new AMSynth(),
+    "DuoSynth": new DuoSynth(),
+    "FMSynth": new FMSynth(),
+    "MembraneSynth": new MembraneSynth(),
+    "MetalSynth" : new MetalSynth(),
+    "MonoSynth": new MonoSynth(),
+    "PluckSynth": new PluckSynth()
+}
+
+const instruments = Object.keys(synthInstruments)
 
 const initialState = {
     theme: 'dark',
     scale: scales['chromatic'],
-    instrument: 'AMSynth'
+    instrumentOptions: instruments,
+    instrument: 'AMSynth',
+    synth: synthInstruments['AMSynth']
 };
 
 const AppContext = createContext(initialState);
@@ -33,7 +49,8 @@ const reducer = (state, action) => {
             if (instruments.includes(action.payload)) {
                 return {
                     ...state,
-                    instrument: [action.payload]
+                    instrument: [action.payload],
+                    synth: synthInstruments[action.payload]
                 }
             } else {
                 return state
