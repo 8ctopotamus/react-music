@@ -16,7 +16,7 @@ export default () => {
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [state.theme]);
+    }, [state.instrument]);
 
     let synth;
     const distortedTone = new Distortion(0.8).toDestination();
