@@ -164,42 +164,42 @@ export default {
     ],
     pentatonic: [
         {
-            letter: 'a',
+            letter: 'q',
             note: 'F#4',
             color: '#922400',
         },
         {
-            letter: 's',
+            letter: 'w',
             note: 'G#4',
             color: '#923a00',
         },
         {
-            letter: 'd',
+            letter: 'e',
             note: 'A#4',
             color: '#924901',
         },
         {
-            letter: 'f',
+            letter: 'r',
             note: 'C#5',
             color: '#925a00',
         },
         {
-            letter: 'j',
+            letter: 'u',
             note: 'D#5',
             color: '#927200',
         },
         {
-            letter: 'k',
+            letter: 'i',
             note:  'F#5',
             color: '#bea600',
         },
         {
-            letter: 'l',
+            letter: 'o',
             note:  'G#5',
             color: '#bebc00',
         },
         {
-            letter: ';',
+            letter: 'p',
             note:  'A#5',
             color: '#9dbe00',
         }

@@ -4,7 +4,7 @@ import Layout from './components/layout'
 import ThemeSwitcher from './components/theme-switcher'
 import Synth from './components/synth'
 import InstrumentSwitcher from './components/instrument-switcher';
-import ScaleSwitcher from './components/scales';
+import ScaleSwitcher from './components/scale-switcher';
 
 export default () => (
   <AppContextProvider>
