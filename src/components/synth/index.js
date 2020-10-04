@@ -1,7 +1,9 @@
 import React, {useEffect} from "react";
-import { PolySynth, MonoSynth, Distortion, Chorus, BitCrusher } from 'tone';
+// import { AMSynth, DuoSynth, FMSynth, MembraneSynth, MetalSynth, MonoSynth, PluckSynth } from 'tone'; // synth instruments
+import { Distortion, Chorus, BitCrusher } from 'tone'; // effects
 import { useAppContext } from "../../context";
 import Pad from './pad';
+// import { Tone } from 'tone/build/esm/core/Tone';
 
 const styles = {
     display: 'grid',
@@ -11,27 +13,14 @@ const styles = {
 
 export default () => {
     const { state } = useAppContext();
+    let synth = state.synth;
+    
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [state.theme]);
+    }, [state.instrument]);
 
-    let synth;
-    const distortedTone = new Distortion(0.8).toDestination();
-    const chorusTone = new Chorus(3, 2, .5).toDestination();
-    const bitCrusherTone = new BitCrusher(4).toDestination();
-
-    if (state.theme === 'light') {
-        synth = new PolySynth();
-        synth.connect(distortedTone);
-    } else {
-        synth = new MonoSynth();
-        synth.connect(bitCrusherTone);
-    }
-
-
-
-    // synth.toDestination();
+    synth.toDestination();
 
     const handleKeyDown = e => {
         console.log(e.key);
