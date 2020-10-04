@@ -13,13 +13,15 @@ const synthInstruments = {
     "MetalSynth" : new MetalSynth(),
     "MonoSynth": new MonoSynth(),
     "PluckSynth": new PluckSynth()
-}
+};
 
-const instruments = Object.keys(synthInstruments)
+const instruments = Object.keys(synthInstruments);
+const notes = Object.keys(scales);
 
 const initialState = {
     theme: 'dark',
-    tone: 'chromatic',
+    noteOptions: notes,
+    noteType: 'chromatic',
     scale: scales['chromatic'],
     instrumentOptions: instruments,
     instrument: 'AMSynth',
@@ -38,10 +40,10 @@ const reducer = (state, action) => {
                 theme: action.payload === 'dark' ? 'dark' : 'light'
             };
         case 'CHANGE_SCALE':
-            if (scales.includes(action.payload)) {
+            if (action.payload) {
                 return {
                     ...state,
-                    tone: [action.payload],
+                    noteType: [action.payload],
                     scale: scales[action.payload]
                 }
             } else {
