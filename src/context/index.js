@@ -19,7 +19,7 @@ const instruments = Object.keys(synthInstruments);
 const notes = Object.keys(scales);
 
 const initialState = {
-    theme: 'dark',
+    theme: 'light',
     noteOptions: notes,
     noteType: 'chromatic',
     scale: scales['chromatic'],
@@ -40,6 +40,8 @@ const reducer = (state, action) => {
                 theme: action.payload === 'dark' ? 'dark' : 'light'
             };
         case 'CHANGE_SCALE':
+
+            console.log(action.payload)
             if (action.payload) {
                 return {
                     ...state,
