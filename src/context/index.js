@@ -13,12 +13,15 @@ const synthInstruments = {
     "MetalSynth" : new MetalSynth(),
     "MonoSynth": new MonoSynth(),
     "PluckSynth": new PluckSynth()
-}
+};
 
-const instruments = Object.keys(synthInstruments)
+const instruments = Object.keys(synthInstruments);
+const notes = Object.keys(scales);
 
 const initialState = {
     theme: 'dark',
+    noteOptions: notes,
+    noteType: 'chromatic',
     scale: scales['chromatic'],
     instrumentOptions: instruments,
     instrument: 'AMSynth',
@@ -40,6 +43,7 @@ const reducer = (state, action) => {
             if (action.payload) {
                 return {
                     ...state,
+                    noteType: [action.payload],
                     scale: scales[action.payload]
                 }
             } else {
