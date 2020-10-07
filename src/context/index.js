@@ -1,9 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
-import scales from './scales';
-// import instruments from './instruments';
-// import synth from '../components/synth';
-import { Tone } from 'tone/build/esm/core/Tone';
 import { AMSynth, DuoSynth, FMSynth, MembraneSynth, MetalSynth, MonoSynth, PluckSynth } from 'tone'; // synth instruments
+import scales from './scales';
 
 const synthInstruments = {
     "AMSynth": new AMSynth(),
@@ -40,8 +37,6 @@ const reducer = (state, action) => {
                 theme: action.payload === 'dark' ? 'dark' : 'light'
             };
         case 'CHANGE_SCALE':
-
-            console.log(action.payload)
             if (action.payload) {
                 return {
                     ...state,
@@ -52,6 +47,7 @@ const reducer = (state, action) => {
                 return state
             }
         case 'CHANGE_INSTRUMENT':
+            console.log(action.payload)
             if (instruments.includes(action.payload)) {
                 return {
                     ...state,

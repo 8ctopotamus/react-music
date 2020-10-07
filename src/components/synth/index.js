@@ -1,9 +1,6 @@
 import React, {useEffect} from "react";
-// import { AMSynth, DuoSynth, FMSynth, MembraneSynth, MetalSynth, MonoSynth, PluckSynth } from 'tone'; // synth instruments
-import { Distortion, Chorus, BitCrusher } from 'tone'; // effects
 import { useAppContext } from "../../context";
 import Pad from './pad';
-// import { Tone } from 'tone/build/esm/core/Tone';
 
 const styles = {
     display: 'grid',
@@ -23,13 +20,11 @@ export default () => {
     synth.toDestination();
 
     const handleKeyDown = e => {
-        console.log(e.key);
         playSound(e.key);
     };
 
     const playSound = targetLetter => {
         const foundNote = state.scale.find(({letter}) => letter === targetLetter);
-        console.log(foundNote);
         if (foundNote) {
             synth.triggerAttackRelease(foundNote.note, '4n');
         }

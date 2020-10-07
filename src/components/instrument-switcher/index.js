@@ -7,7 +7,10 @@ export default () => {
     const { state, dispatch } = useAppContext();
     const instruments = state.instrumentOptions
     return (
-        <select onChange={e => dispatch({ type: 'CHANGE_INSTRUMENT', payload: e.target.value })} value={state.instrument}>
+        <select onChange={e => {
+            dispatch({ type: 'CHANGE_INSTRUMENT', payload: e.target.value })
+            e.target.blur()
+        }} value={state.instrument}>
             {instruments.map( i => <option key={i} value={i}>{i}</option>)}
         </select>
     );
