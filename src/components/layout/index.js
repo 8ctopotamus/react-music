@@ -10,6 +10,7 @@ export default ({ children }) => {
         height: '100vh',
         background: state.theme === 'dark' ? '#061E3E' : 'rgba(39,62,6,0.49)'
     };
+    
     return (
         <div style={styles}>
             <div>{children}</div>

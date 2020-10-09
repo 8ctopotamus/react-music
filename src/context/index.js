@@ -52,7 +52,6 @@ const reducer = (state, action) => {
                 return state
             }
         case 'CHANGE_INSTRUMENT':
-            console.log(action.payload)
             if (instruments.includes(action.payload)) {
                 return {
                     ...state,
@@ -65,12 +64,10 @@ const reducer = (state, action) => {
         case 'CHANGE_VOLUME':
             return {
                 ...state,
-                settings: {
-                    ...state.settings,
-                    volume: action.payload.value
-                }
+                volume: action.payload,
             }
         case 'TOGGLE_EFFECT':
+            console.log(action.payload.name, action.payload.value)
             return {
                 ...state,
                 effects: {

@@ -12,25 +12,30 @@ const styles = {
 
 export default () => {
     const { state } = useAppContext();
-    let synth = state.synth;
     
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [state.instrument, state.scale]);
 
+    // Instrument
+    let synth = state.synth;
     synth.toDestination();
+
+    // Volume
     synth.volume.value = state.volume
 
+    // Effects
     if (state.effects.PingPong) {
         const pingPong = new PingPongDelay("4n", 0.2).toDestination();
         synth.connect(pingPong);
     }
 
-    if (state.effects.Tremolo) {
-        const tremolo = new Tremolo(9, 0.75).toDestination();
+    if (state.effects.Tremelo) {
+        const tremolo = new Tremolo(9, 0.75).toDestination().start();
         synth.connect(tremolo);
     }
+    
     const handleKeyDown = e => {
         playSound(e.key);
     };
