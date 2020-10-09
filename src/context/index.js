@@ -25,6 +25,7 @@ const initialState = {
     synth: synthInstruments['AMSynth'],
     volume: 0,
     effects: {
+        Phaser: false,
         PingPong: false,
         Tremelo: false,
     }

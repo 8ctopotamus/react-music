@@ -1,8 +1,8 @@
-import React, {useEffect} from "react";
+import React, { useEffect, useRef } from "react";
 import { useAppContext } from "../../context";
 import Pad from './pad';
 import TestButton from './testButton';
-import { now, PingPongDelay, Tremolo } from 'tone';
+import { now, PingPongDelay, Tremolo, Phaser } from 'tone';
 
 const styles = {
     display: 'grid',
@@ -16,7 +16,7 @@ export default () => {
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [state.instrument, state.scale]);
+    }, [state.instrument, state.scale, state.effects]);
 
     // Instrument
     let synth = state.synth;
@@ -35,7 +35,18 @@ export default () => {
         const tremolo = new Tremolo(9, 0.75).toDestination().start();
         synth.connect(tremolo);
     }
+
+    if (state.effects.Phaser) {
+        const phaser = new Phaser({
+            frequency: 15,
+            octaves: 5,
+            baseFrequency: 1000
+        }).toDestination();
+        synth.connect(phaser);
+    }
     
+
+
     const handleKeyDown = e => {
         playSound(e.key);
     };
