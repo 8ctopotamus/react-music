@@ -22,7 +22,12 @@ const initialState = {
     scale: scales['chromatic'],
     instrumentOptions: instruments,
     instrument: 'AMSynth',
-    synth: synthInstruments['AMSynth']
+    synth: synthInstruments['AMSynth'],
+    volume: 0,
+    effects: {
+        PingPong: false,
+        Tremelo: false,
+    }
 };
 
 const AppContext = createContext(initialState);
@@ -56,6 +61,22 @@ const reducer = (state, action) => {
                 }
             } else {
                 return state
+            }
+        case 'CHANGE_VOLUME':
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    volume: action.payload.value
+                }
+            }
+        case 'TOGGLE_EFFECT':
+            return {
+                ...state,
+                effects: {
+                    ...state.effects,
+                    [action.payload.name]: action.payload.value,
+                }
             }
         default:
             return state;

@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import { useAppContext } from "../../context";
 import Pad from './pad';
 import TestButton from './testButton';
-import {now} from 'tone';
+import { now, PingPongDelay, Tremolo } from 'tone';
 
 const styles = {
     display: 'grid',
@@ -20,7 +20,17 @@ export default () => {
     }, [state.instrument, state.scale]);
 
     synth.toDestination();
+    synth.volume.value = state.volume
 
+    if (state.effects.PingPong) {
+        const pingPong = new PingPongDelay("4n", 0.2).toDestination();
+        synth.connect(pingPong);
+    }
+
+    if (state.effects.Tremolo) {
+        const tremolo = new Tremolo(9, 0.75).toDestination();
+        synth.connect(tremolo);
+    }
     const handleKeyDown = e => {
         playSound(e.key);
     };
