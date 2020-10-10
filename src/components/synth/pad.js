@@ -1,19 +1,26 @@
 import React from "react";
+import styled from 'styled-components'
 import useKeyPress from "../../hooks/useKeyPress";
 
+const Pad = styled.button`
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  background: ${({color}) => color};
+  cursor: pointer;
+  opacity: ${(isPressed) => isPressed ? 1 : .75}
+`
+
 export default ({ letter, note, color, playSound }) => {
- const isPressed = useKeyPress(letter);
+  const isPressed = useKeyPress(letter);
 
- const styles = {
-  width: 100,
-  height: 100,
-  borderRadius: 8,
-  background: color,
-  cursor: 'pointer',
-  opacity: isPressed ? 1 : .75
- };
-
- return (
-     <button style={styles} onClick={() => playSound(letter)}> {note} </button>
- )
+  return (
+    <Pad
+      onClick={() => playSound(letter)}
+      isPressed={isPressed}
+      color={color}
+    >
+      {note}
+    </Pad>
+  )
 }

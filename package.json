@@ -6,9 +6,12 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "polished": "^4.0.2",
     "react": "^16.13.1",
+    "react-dial-knob": "^1.1.5",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
+    "styled-components": "^5.2.0",
     "tone": "^14.7.58"
   },
   "scripts": {

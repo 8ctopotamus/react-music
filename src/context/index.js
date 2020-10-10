@@ -3,13 +3,13 @@ import { AMSynth, DuoSynth, FMSynth, MembraneSynth, MetalSynth, MonoSynth, Pluck
 import scales from './scales';
 
 const synthInstruments = {
-    "AMSynth": new AMSynth(),
-    "DuoSynth": new DuoSynth(),
-    "FMSynth": new FMSynth(),
-    "MembraneSynth": new MembraneSynth(),
-    "MetalSynth" : new MetalSynth(),
-    "MonoSynth": new MonoSynth(),
-    "PluckSynth": new PluckSynth()
+    AMSynth,
+    DuoSynth,
+    FMSynth,
+    MembraneSynth,
+    MetalSynth,
+    MonoSynth,
+    PluckSynth
 };
 
 const instruments = Object.keys(synthInstruments);
@@ -22,7 +22,13 @@ const initialState = {
     scale: scales['chromatic'],
     instrumentOptions: instruments,
     instrument: 'AMSynth',
-    synth: synthInstruments['AMSynth']
+    synth: synthInstruments['AMSynth'],
+    volume: 0,
+    effects: {
+        Phaser: false,
+        PingPongDelay: false,
+        Tremelo: false,
+    }
 };
 
 const AppContext = createContext(initialState);
@@ -47,7 +53,6 @@ const reducer = (state, action) => {
                 return state
             }
         case 'CHANGE_INSTRUMENT':
-            console.log(action.payload)
             if (instruments.includes(action.payload)) {
                 return {
                     ...state,
@@ -56,6 +61,20 @@ const reducer = (state, action) => {
                 }
             } else {
                 return state
+            }
+        case 'CHANGE_VOLUME':
+            return {
+                ...state,
+                volume: action.payload,
+            }
+        case 'TOGGLE_EFFECT':
+            console.log(action.payload.name, action.payload.value)
+            return {
+                ...state,
+                effects: {
+                    ...state.effects,
+                    [action.payload.name]: action.payload.value,
+                }
             }
         default:
             return state;
