@@ -3,7 +3,7 @@ import { useAppContext } from "../../context";
 import Pad from './pad';
 import Bass from './bass';
 import TestButton from './testButton';
-import { now, PingPongDelay, Tremolo, Phaser } from 'tone';
+import { now, BitCrusher, PingPongDelay, Tremolo, Phaser } from 'tone';
 
 const styles = {
     display: 'grid',
@@ -21,6 +21,7 @@ export default () => {
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => {
+            synth.dispose()
             window.removeEventListener('keydown', handleKeyDown)
         };
     }, [state.instrument, state.scale, state.effects]);
@@ -29,14 +30,19 @@ export default () => {
     synth.volume.value = state.volume
 
     // Effects
+    if (state.effects.BitCrusher) {
+        const crusher = new BitCrusher(4).toDestination();
+        synth.chain(crusher);
+    }
+
     if (state.effects.PingPongDelay) {
         const pingPong = new PingPongDelay("4n", 0.2).toDestination();
-        synth.connect(pingPong);
+        synth.chain(pingPong);
     }
 
     if (state.effects.Tremelo) {
-        const tremolo = new Tremolo(9, 0.75).toDestination().start();
-        synth.connect(tremolo);
+        const tremelo = new Tremolo(9, 0.75).toDestination().start();
+        synth.chain(tremelo);
     }
 
     if (state.effects.Phaser) {
@@ -45,7 +51,7 @@ export default () => {
             octaves: 5,
             baseFrequency: 100
         }).toDestination();
-        synth.connect(phaser);
+        synth.chain(phaser);
     }
 
     const handleKeyDown = e => {
@@ -74,11 +80,11 @@ export default () => {
 
     return (
         <>
-        <div style={styles}>
-           {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.letter} /> )}
-            {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.letters} />)}
-        </div>
-        <TestButton playAll={playAll} />
+            <div style={styles}>
+            {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.letter} /> )}
+                {/* {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.letters} />)} */}
+            </div>
+            <TestButton playAll={playAll} />
         </>
     )
 }

@@ -25,6 +25,7 @@ const initialState = {
     synth: synthInstruments['AMSynth'],
     volume: 0,
     effects: {
+        BitCrusher: false,
         Phaser: false,
         PingPongDelay: false,
         Tremelo: false,
@@ -68,7 +69,6 @@ const reducer = (state, action) => {
                 volume: action.payload,
             }
         case 'TOGGLE_EFFECT':
-            console.log(action.payload.name, action.payload.value)
             return {
                 ...state,
                 effects: {
