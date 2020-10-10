@@ -3,13 +3,13 @@ import { AMSynth, DuoSynth, FMSynth, MembraneSynth, MetalSynth, MonoSynth, Pluck
 import scales from './scales';
 
 const synthInstruments = {
-    "AMSynth": new AMSynth(),
-    "DuoSynth": new DuoSynth(),
-    "FMSynth": new FMSynth(),
-    "MembraneSynth": new MembraneSynth(),
-    "MetalSynth" : new MetalSynth(),
-    "MonoSynth": new MonoSynth(),
-    "PluckSynth": new PluckSynth()
+    AMSynth,
+    DuoSynth,
+    FMSynth,
+    MembraneSynth,
+    MetalSynth,
+    MonoSynth,
+    PluckSynth
 };
 
 const instruments = Object.keys(synthInstruments);
@@ -26,7 +26,7 @@ const initialState = {
     volume: 0,
     effects: {
         Phaser: false,
-        PingPong: false,
+        PingPongDelay: false,
         Tremelo: false,
     }
 };

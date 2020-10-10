@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useAppContext } from "../../context";
 import Pad from './pad';
 import TestButton from './testButton';
@@ -13,20 +13,22 @@ const styles = {
 export default () => {
     const { state } = useAppContext();
     
+    // Instrument
+    let synth = new state.synth();
+    synth.toDestination();
+
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown)
+        };
     }, [state.instrument, state.scale, state.effects]);
-
-    // Instrument
-    let synth = state.synth;
-    synth.toDestination();
 
     // Volume
     synth.volume.value = state.volume
 
     // Effects
-    if (state.effects.PingPong) {
+    if (state.effects.PingPongDelay) {
         const pingPong = new PingPongDelay("4n", 0.2).toDestination();
         synth.connect(pingPong);
     }
@@ -40,12 +42,10 @@ export default () => {
         const phaser = new Phaser({
             frequency: 15,
             octaves: 5,
-            baseFrequency: 1000
+            baseFrequency: 100
         }).toDestination();
         synth.connect(phaser);
     }
-    
-
 
     const handleKeyDown = e => {
         playSound(e.key);
