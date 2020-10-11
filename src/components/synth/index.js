@@ -7,7 +7,7 @@ import { now, BitCrusher, PingPongDelay, Tremolo, Phaser } from 'tone';
 
 const styles = {
     display: 'grid',
-    gridGap: 10,
+    gridGap: 15,
     gridTemplateColumns: 'repeat(4, 1fr)',
 };
 
