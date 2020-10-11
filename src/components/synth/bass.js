@@ -14,6 +14,6 @@ export default ({ letters, chord, color, playChord }) => {
     };
 
     return (
-        <button style={styles} onClick={() => playChord(letters)}> {chord} </button>
+        <button style={styles} onClick={() => playChord(chord)}> {chord} </button>
     )
 }

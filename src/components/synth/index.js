@@ -3,7 +3,9 @@ import {useAppContext} from "../../context";
 import Pad from './pad';
 import Bass from './bass';
 import TestButton from './testButton';
-import {BitCrusher, now, Phaser, PingPongDelay, Tremolo} from 'tone';
+import {BitCrusher, now, Phaser, PingPongDelay, Tremolo, Chorus, PolySynth} from 'tone';
+
+let polySynth;
 
 const styles = {
     display: 'grid',
@@ -24,7 +26,7 @@ export default () => {
             synth.dispose();
             window.removeEventListener('keydown', handleKeyDown)
         };
-    }, [state.instrument, state.scale, state.effects]);
+    }, [state.instrument, state.scale, state.chord, state.effects]);
 
     // Volume
     synth.volume.value = state.volume;
@@ -53,6 +55,10 @@ export default () => {
         }).toDestination();
         synth.chain(phaser);
     }
+    if (state.effects.Chorus) {
+        const chorus = new Chorus(4, 2.5, 0.5);
+        polySynth = new PolySynth(4, synth).connect(chorus);
+    }
 
     const handleKeyDown = e => {
         playSound(e.key);
@@ -66,12 +72,13 @@ export default () => {
     };
 
     const playChord = targetChord => {
-        const foundChord = state.chord.find(({simultaneousNotes}) => simultaneousNotes === targetChord);
+        const foundChord = state.chord.find(({triad}) => triad === targetChord);
+        console.log(foundChord.notes);
         if (foundChord) {
-            synth.triggerAttackRelease(foundChord.chord, '4n');
+            polySynth.triggerAttackRelease(foundChord.notes, '4n');
         }
     };
-    // if (state.scale['major']) {
+    // if (state.scale['major']) {zxc
     //     return Bass.majorChords;
     // }
     // else {
@@ -87,8 +94,8 @@ export default () => {
     return (
         <>
             <div style={styles}>
-            {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.letter} /> )}
-            {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.letters} />)}
+            {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.name} /> )}
+            {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.name} />)}
             </div>
             <TestButton playAll={playAll} />
         </>

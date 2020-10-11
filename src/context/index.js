@@ -22,6 +22,7 @@ const initialState = {
     noteOptions: notes,
     chordOptions: triads,
     noteType: 'major',
+    chordType: 'majorChords',
     scale: scales['major'],
     chord: chords['majorChords'],
     instrumentOptions: instruments,
@@ -53,6 +54,16 @@ const reducer = (state, action) => {
                     ...state,
                     noteType: [action.payload],
                     scale: scales[action.payload]
+                }
+            } else {
+                return state
+            }
+        case 'CHANGE_CHORD':
+            if (action.payload) {
+                return {
+                    ...state,
+                    chordType: [action.payload],
+                    chord: chords[action.payload]
                 }
             } else {
                 return state

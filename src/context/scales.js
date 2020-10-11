@@ -164,11 +164,13 @@ export default {
     ],
     pentatonic: [
         {
+            name: 'F#',
             letter: 'q',
             note: 'F#4',
             color: '#922400',
         },
         {
+            name: 'G#',
             letter: 'w',
             note: 'G#4',
             color: '#923a00',
