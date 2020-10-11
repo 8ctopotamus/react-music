@@ -88,7 +88,7 @@ export default () => {
         <>
             <div style={styles}>
             {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.letter} /> )}
-                 {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.letters} />)}
+            {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.letters} />)}
             </div>
             <TestButton playAll={playAll} />
         </>

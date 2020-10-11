@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAppContext } from '../../context';
-import scales from '../../context/scales';
 
 export default () => {
     const { state, dispatch } = useAppContext();
