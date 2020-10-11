@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { useAppContext } from "../../context";
+import React, {useEffect} from "react";
+import {useAppContext} from "../../context";
 import Pad from './pad';
 import Bass from './bass';
 import TestButton from './testButton';
-import { now, BitCrusher, PingPongDelay, Tremolo, Phaser } from 'tone';
+import {BitCrusher, now, Phaser, PingPongDelay, Tremolo} from 'tone';
 
 const styles = {
     display: 'grid',
@@ -13,7 +13,7 @@ const styles = {
 
 export default () => {
     const { state } = useAppContext();
-  
+
     // Instrument
     let synth = new state.synth();
     synth.toDestination();
@@ -21,13 +21,13 @@ export default () => {
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => {
-            synth.dispose()
+            synth.dispose();
             window.removeEventListener('keydown', handleKeyDown)
         };
     }, [state.instrument, state.scale, state.effects]);
 
     // Volume
-    synth.volume.value = state.volume
+    synth.volume.value = state.volume;
 
     // Effects
     if (state.effects.BitCrusher) {
@@ -71,6 +71,12 @@ export default () => {
             synth.triggerAttackRelease(foundChord.chord, '4n');
         }
     };
+    // if (state.scale['major']) {
+    //     return Bass.majorChords;
+    // }
+    // else {
+    //     return null;
+    // }
 
     const playAll = () => {
         for (let n = 0; n < state.scale.length; n++) {
@@ -82,7 +88,7 @@ export default () => {
         <>
             <div style={styles}>
             {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.letter} /> )}
-                {/* {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.letters} />)} */}
+                 {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.letters} />)}
             </div>
             <TestButton playAll={playAll} />
         </>
