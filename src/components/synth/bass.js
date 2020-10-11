@@ -11,8 +11,8 @@ const Bass = styled.button`
   opacity: ${(isPressed) => isPressed ? 1 : .75}
 `;
 
-export default ({ letters, chord, color, playChord }) => {
-    const isPressed = useKeyPress(letters);
+export default ({ letter, chord, color, playChord }) => {
+    const isPressed = useKeyPress(letter);
 
     return (
         <Bass

@@ -54,12 +54,12 @@ export default () => {
         }).toDestination();
         synth.chain(phaser);
     }
-    // if (state.effects.Chorus) {
+    if (state.instrument === 'AMSynth') {
         const chorus = new Chorus(4, 2.5, 0.5);
-        const poly = new PolySynth().connect(chorus).toDestination();
+        const poly = new PolySynth().toDestination();
         poly.set({ detune: -1200 });
         poly.triggerAttackRelease(['C3', 'E3', 'G3'], 1);
-    // }
+    }
 
     const handleKeyDown = e => {
         playSound(e.key);
@@ -97,8 +97,8 @@ export default () => {
     return (
         <>
             <div style={styles}>
-            {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.name} /> )}
-            {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.name} />)}
+            {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.note} /> )}
+            {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.notes} />)}
             </div>
             <TestButton playAll={playAll} />
         </>
