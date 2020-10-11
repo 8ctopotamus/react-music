@@ -4,8 +4,7 @@ import Pad from './pad';
 import Bass from './bass';
 import TestButton from './testButton';
 import {BitCrusher, now, Phaser, PingPongDelay, Tremolo, Chorus, PolySynth} from 'tone';
-
-let polySynth;
+import { AMSynth } from 'tone';
 
 const styles = {
     display: 'grid',
@@ -26,7 +25,7 @@ export default () => {
             synth.dispose();
             window.removeEventListener('keydown', handleKeyDown)
         };
-    }, [state.instrument, state.scale, state.chord, state.effects]);
+    }, [state.instrument, state.scale, state.effects]);
 
     // Volume
     synth.volume.value = state.volume;
@@ -55,10 +54,12 @@ export default () => {
         }).toDestination();
         synth.chain(phaser);
     }
-    if (state.effects.Chorus) {
+    // if (state.effects.Chorus) {
         const chorus = new Chorus(4, 2.5, 0.5);
-        polySynth = new PolySynth(4, synth).connect(chorus);
-    }
+        const poly = new PolySynth().connect(chorus).toDestination();
+        poly.set({ detune: -1200 });
+        poly.triggerAttackRelease(['C3', 'E3', 'G3'], 1);
+    // }
 
     const handleKeyDown = e => {
         playSound(e.key);
@@ -75,7 +76,9 @@ export default () => {
         const foundChord = state.chord.find(({triad}) => triad === targetChord);
         console.log(foundChord.notes);
         if (foundChord) {
-            polySynth.triggerAttackRelease(foundChord.notes, '4n');
+            const chorus = new Chorus(4, 2.5, 0.5);
+            const polySynth = new PolySynth(4, synth).connect(chorus);
+            polySynth.triggerAttackRelease(['C3', 'E3', 'G3'], '4n');
         }
     };
     // if (state.scale['major']) {zxc
