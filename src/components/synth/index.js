@@ -4,7 +4,6 @@ import Pad from './pad';
 import Bass from './bass';
 import TestButton from './testButton';
 import {BitCrusher, now, Phaser, PingPongDelay, Tremolo, Chorus, PolySynth} from 'tone';
-import { AMSynth } from 'tone';
 
 const styles = {
     display: 'grid',
@@ -15,6 +14,7 @@ const styles = {
 export default () => {
     const { state } = useAppContext();
 
+    let poly
     // Instrument
     let synth = new state.synth();
     synth.toDestination();
@@ -55,10 +55,8 @@ export default () => {
         synth.chain(phaser);
     }
     if (state.instrument === 'AMSynth') {
-        const chorus = new Chorus(4, 2.5, 0.5);
-        const poly = new PolySynth().toDestination();
+        poly = new PolySynth().toDestination();
         poly.set({ detune: -1200 });
-        poly.triggerAttackRelease(['C3', 'E3', 'G3'], 1);
     }
 
     const handleKeyDown = e => {
@@ -69,6 +67,9 @@ export default () => {
         const foundNote = state.scale.find(({letter}) => letter === targetLetter);
         if (foundNote) {
             synth.triggerAttackRelease(foundNote.note, '4n');
+        }
+        if (poly) {
+            poly.triggerAttackRelease(['C3', 'E3', 'G3'], 1);
         }
     };
 
@@ -81,12 +82,6 @@ export default () => {
             polySynth.triggerAttackRelease(['C3', 'E3', 'G3'], '4n');
         }
     };
-    // if (state.scale['major']) {zxc
-    //     return Bass.majorChords;
-    // }
-    // else {
-    //     return null;
-    // }
 
     const playAll = () => {
         for (let n = 0; n < state.scale.length; n++) {
@@ -97,9 +92,10 @@ export default () => {
     return (
         <>
             <div style={styles}>
-            {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.note} /> )}
-            {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.notes} />)}
+                {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.note} /> )}
+                {/* {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.notes} />)} */}
             </div>
+
             <TestButton playAll={playAll} />
         </>
     )
