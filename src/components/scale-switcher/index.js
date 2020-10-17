@@ -7,16 +7,14 @@ export default () => {
     const chords = state.chordOptions;
 
     return (
-        <div>
+        <>
             <select onChange={e => dispatch({ type: 'CHANGE_SCALE', payload: e.target.value })} value={state.noteType}>
                 {notes.map( s => <option key={s} value={s}>{s}</option>)}
-
             </select>
 
-            <br/>
             <select onChange={e => dispatch({ type: 'CHANGE_CHORD', payload: e.target.value })} value={state.chordType}>
-            {chords.map( c => <option key={c} value={c}>{c}</option>)}
+                {chords.map( c => <option key={c} value={c}>{c}</option>)}
             </select>
-        </div>
+        </>
     );
 }
