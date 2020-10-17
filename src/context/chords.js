@@ -19,7 +19,8 @@ export default {
             color: '#922400',
         },
     ],
-    minorChords: [{
+    minorChords: [
+        {
         name: 'E Minor',
         letter: 'z',
         notes: ['E2', 'G2', 'B3'],

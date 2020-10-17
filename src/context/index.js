@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { AMSynth, DuoSynth, FMSynth, MembraneSynth, MetalSynth, MonoSynth, PluckSynth } from 'tone'; // synth instruments
 import scales from './scales';
+import chords from './chords';
 
 const synthInstruments = {
     AMSynth,
@@ -14,12 +15,16 @@ const synthInstruments = {
 
 const instruments = Object.keys(synthInstruments);
 const notes = Object.keys(scales);
+const triads = Object.keys(chords);
 
 const initialState = {
     theme: 'light',
     noteOptions: notes,
-    noteType: 'chromatic',
-    scale: scales['chromatic'],
+    chordOptions: triads,
+    noteType: 'major',
+    chordType: 'majorChords',
+    scale: scales['major'],
+    chord: chords['majorChords'],
     instrumentOptions: instruments,
     instrument: 'AMSynth',
     synth: synthInstruments['AMSynth'],
@@ -53,6 +58,16 @@ const reducer = (state, action) => {
             } else {
                 return state
             }
+        case 'CHANGE_CHORD':
+            if (action.payload) {
+                return {
+                    ...state,
+                    chordType: [action.payload],
+                    chord: chords[action.payload]
+                }
+            } else {
+                return state
+            }
         case 'CHANGE_INSTRUMENT':
             if (instruments.includes(action.payload)) {
                 return {
@@ -67,7 +82,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 volume: action.payload,
-            }
+            };
         case 'TOGGLE_EFFECT':
             return {
                 ...state,
@@ -75,7 +90,7 @@ const reducer = (state, action) => {
                     ...state.effects,
                     [action.payload.name]: action.payload.value,
                 }
-            }
+            };
         default:
             return state;
     }

@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
-import { useAppContext } from "../../context";
+import React, {useEffect} from "react";
+import {useAppContext} from "../../context";
 import Pad from './pad';
 import Bass from './bass';
 import TestButton from './testButton';
-import { now, BitCrusher, PingPongDelay, Tremolo, Phaser } from 'tone';
+import {BitCrusher, now, Phaser, PingPongDelay, Tremolo, Chorus, PolySynth} from 'tone';
+import { AMSynth } from 'tone';
 
 const styles = {
     display: 'grid',
@@ -13,7 +14,7 @@ const styles = {
 
 export default () => {
     const { state } = useAppContext();
-  
+
     // Instrument
     let synth = new state.synth();
     synth.toDestination();
@@ -21,13 +22,13 @@ export default () => {
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => {
-            synth.dispose()
+            synth.dispose();
             window.removeEventListener('keydown', handleKeyDown)
         };
     }, [state.instrument, state.scale, state.effects]);
 
     // Volume
-    synth.volume.value = state.volume
+    synth.volume.value = state.volume;
 
     // Effects
     if (state.effects.BitCrusher) {
@@ -53,6 +54,12 @@ export default () => {
         }).toDestination();
         synth.chain(phaser);
     }
+    if (state.instrument === 'AMSynth') {
+        const chorus = new Chorus(4, 2.5, 0.5);
+        const poly = new PolySynth().toDestination();
+        poly.set({ detune: -1200 });
+        poly.triggerAttackRelease(['C3', 'E3', 'G3'], 1);
+    }
 
     const handleKeyDown = e => {
         playSound(e.key);
@@ -66,11 +73,20 @@ export default () => {
     };
 
     const playChord = targetChord => {
-        const foundChord = state.chord.find(({simultaneousNotes}) => simultaneousNotes === targetChord);
+        const foundChord = state.chord.find(({triad}) => triad === targetChord);
+        console.log(foundChord.notes);
         if (foundChord) {
-            synth.triggerAttackRelease(foundChord.chord, '4n');
+            const chorus = new Chorus(4, 2.5, 0.5);
+            const polySynth = new PolySynth(4, synth).connect(chorus);
+            polySynth.triggerAttackRelease(['C3', 'E3', 'G3'], '4n');
         }
     };
+    // if (state.scale['major']) {zxc
+    //     return Bass.majorChords;
+    // }
+    // else {
+    //     return null;
+    // }
 
     const playAll = () => {
         for (let n = 0; n < state.scale.length; n++) {
@@ -81,8 +97,8 @@ export default () => {
     return (
         <>
             <div style={styles}>
-            {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.letter} /> )}
-                {/* {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.letters} />)} */}
+            {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.note} /> )}
+            {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.notes} />)}
             </div>
             <TestButton playAll={playAll} />
         </>
