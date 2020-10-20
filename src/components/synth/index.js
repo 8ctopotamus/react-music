@@ -4,11 +4,11 @@ import Pad from './pad';
 import Bass from './bass';
 import TestButton from './testButton';
 import SongLibrary from './songLibrary';
-import {BitCrusher, start, now, Phaser, PingPongDelay, Tremolo, Transport, Part} from 'tone';
+import {BitCrusher, start, now, Phaser, PingPongDelay, Tremolo, Chorus, PolySynth, Transport, Part} from 'tone';
 
 const styles = {
     display: 'grid',
-    gridGap: 10,
+    gridGap: 15,
     gridTemplateColumns: 'repeat(4, 1fr)',
 };
 
@@ -21,6 +21,7 @@ export default () => {
         console.log('bpm default is', Transport.bpm.value);
     }, []);
 
+    let poly
     // Instrument
     let synth = new state.synth();
     synth.toDestination();
@@ -63,6 +64,10 @@ export default () => {
         }).toDestination();
         synth.chain(phaser);
     }
+    if (state.instrument === 'AMSynth') {
+        poly = new PolySynth().toDestination();
+        poly.set({ detune: -1200 });
+    }
 
     const handleKeyDown = e => {
         playSound(e.key);
@@ -73,20 +78,20 @@ export default () => {
         if (foundNote) {
             synth.triggerAttackRelease(foundNote.note, '4n');
         }
+        if (poly) {
+            poly.triggerAttackRelease(['C3', 'E3', 'G3'], 1);
+        }
     };
 
     const playChord = targetChord => {
-        const foundChord = state.chord.find(({simultaneousNotes}) => simultaneousNotes === targetChord);
+        const foundChord = state.chord.find(({triad}) => triad === targetChord);
+        console.log(foundChord.notes);
         if (foundChord) {
-            synth.triggerAttackRelease(foundChord.chord, '4n');
+            const chorus = new Chorus(4, 2.5, 0.5);
+            const polySynth = new PolySynth(4, synth).connect(chorus);
+            polySynth.triggerAttackRelease(['C3', 'E3', 'G3'], '4n');
         }
     };
-    // if (state.scale['major']) {
-    //     return Bass.majorChords;
-    // }
-    // else {
-    //     return null;
-    // }
 
     const playAll = () => {
         for (let n = 0; n < state.scale.length; n++) {
@@ -113,9 +118,10 @@ export default () => {
     return (
         <>
             <div style={styles}>
-            {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.letter} /> )}
-            {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.letters} />)}
+                {state.scale.map(note => <Pad {...note} playSound={playSound} key={note.note} /> )}
+                {/* {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.notes} />)} */}
             </div>
+
             <TestButton playAll={playAll} />
             <SongLibrary playScore={playScore} />
         </>
