@@ -3,7 +3,8 @@ import {useAppContext} from "../../context";
 import Pad from './pad';
 import Bass from './bass';
 import TestButton from './testButton';
-import {BitCrusher, now, Phaser, PingPongDelay, Tremolo} from 'tone';
+import SongLibrary from './songLibrary';
+import {BitCrusher, start, now, Phaser, PingPongDelay, Tremolo, Transport, Part} from 'tone';
 
 const styles = {
     display: 'grid',
@@ -14,9 +15,18 @@ const styles = {
 export default () => {
     const { state } = useAppContext();
 
+    // Set-up when component is mounted
+    useEffect( () => {
+        Transport.bpm.value = 90;
+        console.log('bpm default is', Transport.bpm.value);
+    }, []);
+
     // Instrument
     let synth = new state.synth();
     synth.toDestination();
+
+    // "part"
+    let part = new Part;
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
@@ -80,9 +90,25 @@ export default () => {
 
     const playAll = () => {
         for (let n = 0; n < state.scale.length; n++) {
+            //console.log(state.scale[0].note, '8n', now() + ( n * .25))
             synth.triggerAttackRelease(state.scale[n].note, '8n', now() + ( n * .25) );
         }
     };
+
+    const playScore= (score) => {
+        part.clear();
+        part.dispose();
+        Transport.clear();
+        Transport.timeSignature = score.timeSignature;
+        part = new Part(((time, note) => {
+            // the notes given as the second element in the array
+            // will be passed in as the second argument
+            synth.triggerAttackRelease(note, "16n", time);
+        }), score.songArray).start(0);
+        part.loop = 1;
+        part.loopEnd = score.totalMeasures;
+        Transport.start();
+    }
 
     return (
         <>
@@ -91,6 +117,7 @@ export default () => {
             {state.chord.map(allNotes => <Bass {...allNotes} playChord={playChord} key={allNotes.letters} />)}
             </div>
             <TestButton playAll={playAll} />
+            <SongLibrary playScore={playScore} />
         </>
     )
 }
